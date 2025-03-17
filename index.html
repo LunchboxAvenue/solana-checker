@@ -1,294 +1,46 @@
-<html data-bs-theme="dark">
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
   <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
       rel="stylesheet"
       integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
       crossorigin="anonymous"
     />
-    <script src="./bootstrap.js"></script>
-    <script src="./generateHtml.js"></script>
     <style>
-      ::-webkit-scrollbar {
-        display: none !important;
-      }
-
-      ::-webkit-scrollbar-button {
-        display: none !important;
-      }
-
       .token-logo {
         width: 30px;
         height: 30px;
         margin-right: 10px;
       }
+
+      .background {
+        background-image: linear-gradient(
+          to right,
+          rgba(30, 28, 68, 255),
+          rgba(35, 16, 48, 255)
+        );
+      }
+
+      .alert {
+        margin-bottom: 1px;
+        height: 35px;
+        line-height: 32px;
+        padding: 0px 15px;
+      }
     </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DLMM Checker</title>
   </head>
-
-  <body style="width: 800px; height: 600px; overflow: hidden" class="container">
-    <div class="row justify-content-center">
-      <div class="container p-3">
-        <ul class="nav justify-content-end nav-tabs" id="myTab" role="tablist">
-          <li class="nav-item" role="presentation">
-            <button
-              class="nav-link active"
-              id="home-tab"
-              data-bs-toggle="tab"
-              data-bs-target="#home-tab-pane"
-              type="button"
-              role="tab"
-              aria-controls="home-tab-pane"
-              aria-selected="true"
-            >
-              Home
-            </button>
-          </li>
-          <li class="nav-item" role="presentation">
-            <button
-              class="nav-link"
-              id="checklist-tab"
-              data-bs-toggle="tab"
-              data-bs-target="#checklist-tab-pane"
-              type="button"
-              role="tab"
-              aria-controls="checklist-tab-pane"
-              aria-selected="false"
-            >
-              Checklist
-            </button>
-          </li>
-          <li class="nav-item" role="presentation">
-            <button
-              class="nav-link"
-              id="resources-tab"
-              data-bs-toggle="tab"
-              data-bs-target="#resources-tab-pane"
-              type="button"
-              role="tab"
-              aria-controls="resources-tab-pane"
-              aria-selected="false"
-            >
-              Resources
-            </button>
-          </li>
-        </ul>
-        <div class="tab-content" id="myTabContent">
-          <div
-            class="tab-pane fade show active"
-            id="home-tab-pane"
-            role="tabpanel"
-            aria-labelledby="home-tab"
-            tabindex="0"
-          >
-            <div class="container pt-4">
-              <form>
-                <div class="mb-3">
-                  <input
-                    id="contractAddress"
-                    type="text"
-                    placeholder="Solana CA"
-                    name="contractAddress"
-                    class="form-control"
-                    aria-describedby="contractAddressHelp"
-                  />
-                  <div id="contractAddressHelp" class="form-text">
-                    Make sure this is solana token.
-                  </div>
-                </div>
-                <button
-                  type="button"
-                  class="btn btn-primary w-100 py-2"
-                  id="findButton"
-                >
-                  Find
-                </button>
-              </form>
-            </div>
-            <div id="link-result" class="mb-2"></div>
-            <div id="jupiter-result" class="mb-2"></div>
-            <div id="meteora-result"></div>
-          </div>
-
-          <div
-            class="tab-pane fade"
-            id="checklist-tab-pane"
-            role="tabpanel"
-            aria-labelledby="checklist-tab"
-            tabindex="0"
-          >
-            <div class="container pt-4">
-              <table class="table table-striped">
-                <thead>
-                  <tr>
-                    <th scope="col">#Platform</th>
-                    <th scope="col">#Green Flags</th>
-                    <th scope="col">#Red Flags</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <th scope="row">jupiter</th>
-                    <td>
-                      <span class="badge text-bg-success rounded-pill"
-                        >Organic Score</span
-                      >
-                    </td>
-                    <td>
-                      <span class="badge text-bg-warning rounded-pill"
-                        >Check List</span
-                      >
-                    </td>
-                  </tr>
-                  <tr>
-                    <th scope="row">gmgn</th>
-                    <td>
-                      <span class="badge text-bg-success rounded-pill"
-                        >Audit</span
-                      >
-                      <span class="badge text-bg-success rounded-pill"
-                        >Top 10</span
-                      >
-                      <span class="badge text-bg-success rounded-pill mt-1"
-                        >Low Snipers</span
-                      >
-                    </td>
-                    <td>
-                      <span class="badge text-bg-warning rounded-pill"
-                        >Twitter Rename</span
-                      >
-                    </td>
-                  </tr>
-                  <tr>
-                    <th scope="row">bubblemaps</th>
-                    <td>
-                      <span class="badge text-bg-success rounded-pill"
-                        >Many Small Clusters</span
-                      >
-                    </td>
-                    <td>
-                      <span class="badge text-bg-danger rounded-pill"
-                        >Single Cluster</span
-                      >
-                    </td>
-                  </tr>
-                  <tr>
-                    <th scope="row">rugcheck</th>
-                    <td>
-                      <span class="badge text-bg-success rounded-pill"
-                        >Risk Analysis Good</span
-                      >
-                    </td>
-                    <td>
-                      <span class="badge text-bg-danger rounded-pill"
-                        >Contract Exploits</span
-                      >
-                      <span class="badge text-bg-danger rounded-pill"
-                        >Dev wallet many tokens</span
-                      >
-                      <span class="badge text-bg-danger rounded-pill mt-1"
-                        >Shady tokenomics</span
-                      >
-                    </td>
-                  </tr>
-                  <tr>
-                    <th scope="row">trenchbot</th>
-                    <td>
-                      <span class="badge text-bg-success rounded-pill"
-                        >Liquidity properly structured</span
-                      >
-                    </td>
-                    <td>
-                      <span class="badge text-bg-danger rounded-pill"
-                        >Big bundles</span
-                      >
-                      <span class="badge text-bg-danger rounded-pill"
-                        >Bundles haven't sold</span
-                      >
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-          <div
-            class="tab-pane fade"
-            id="resources-tab-pane"
-            role="tabpanel"
-            aria-labelledby="resources-tab"
-            tabindex="0"
-          >
-            <div class="container pt-4">
-              <table class="table table-striped">
-                <thead>
-                  <tr>
-                    <th scope="col">Resource</th>
-                    <th scope="col">Description</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <th scope="row">
-                      <a
-                        href="https://solmeteor.ai/"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        >solmeteor</a
-                      >
-                    </th>
-                    <td>Find trending pools</td>
-                  </tr>
-                  <tr>
-                    <th scope="row">
-                      <a
-                        href="https://dlmm.geeklad.com/"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        >geeklad dlmm</a
-                      >
-                    </th>
-                    <td>DLMM opportunities</td>
-                  </tr>
-                  <tr>
-                    <th scope="row">
-                      <a
-                        href="https://lookerstudio.google.com/u/0/reporting/95755595-a3b9-44bb-bb1a-8615c77059f7/page/wmP0D"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        >goosedao dlmm</a
-                      >
-                    </th>
-                    <td>Goosedao DLMM opportunities</td>
-                  </tr>
-                  <tr>
-                    <th scope="row">
-                      <a
-                        href="https://www.metlex.io/"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        >metlex</a
-                      >
-                    </th>
-                    <td>P&L checker</td>
-                  </tr>
-                  <tr>
-                    <th scope="row">
-                      <a
-                        href="https://geeklad.github.io/meteora-profit-analysis/"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        >geeklad profit</a
-                      >
-                    </th>
-                    <td>Meteora points checker</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <script src="popup.js"></script>
+  <body class="background">
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+      crossorigin="anonymous"
+    ></script>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>
