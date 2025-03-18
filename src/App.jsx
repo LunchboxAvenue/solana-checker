@@ -168,7 +168,7 @@ function App() {
 
         {/* First row (Jupiter, RugCheck, Info*/}
         <div className="row mt-4">
-          <div className="col-4">
+          <div className="col-12 col-lg-4">
             {tokenAddress && (
               <div className="card">
                 <div className="card-header" style={{ textAlign: "center" }}>
@@ -217,7 +217,7 @@ function App() {
             )}
           </div>
 
-          <div className="col-4">
+          <div className="col-12 col-lg-4">
             {tokenAddress && (
               <div className="card" style={{ height: "451px" }}>
                 <div className="card-header" style={{ textAlign: "center" }}>
@@ -251,7 +251,7 @@ function App() {
               </div>
             )}
           </div>
-          <div className="col-4" style={{ maxHeight: "408px" }}>
+          <div className="col-12 col-lg-4" style={{ maxHeight: "408px" }}>
             {tokenAddress && (
               <div className="card" style={{ height: "451px" }}>
                 <div className="card-header" style={{ textAlign: "center" }}>
