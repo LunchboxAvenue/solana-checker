@@ -4,6 +4,7 @@ import RugCheck from "./components/RugCheck";
 import TopHolders from "./components/TopHolders";
 import About from "./components/About";
 import Resources from "./components/Resources";
+import { Analytics } from "@vercel/analytics/react";
 
 const donationWalletAddress = "3k1czCx2S8hTRSzwwCDtszvwNKnmwkNfGJ59h9ffsD4G";
 
@@ -285,7 +286,11 @@ function App() {
         </div>
 
         {/* Second row (trenchbot iframe)*/}
-        <div className="row mt-4" style={{ height: "676px" }} id="trenchRadarIframe">
+        <div
+          className="row mt-4"
+          style={{ height: "676px" }}
+          id="trenchRadarIframe"
+        >
           <div className="col-12">
             {tokenAddress && (
               <div className="card">
@@ -386,7 +391,7 @@ function App() {
       {/* Info */}
       <div
         className="offcanvas offcanvas-end"
-        tabindex="-1"
+        tabIndex="-1"
         id="offcanvasRight"
         aria-labelledby="offcanvasRightLabel"
       >
@@ -396,12 +401,14 @@ function App() {
       {/* Resources */}
       <div
         className="offcanvas offcanvas-end"
-        tabindex="-1"
+        tabIndex="-1"
         id="offcanvasRightResources"
         aria-labelledby="offcanvasRightResourcesLabel"
       >
         <Resources />
       </div>
+
+      <Analytics />
     </>
   );
 }

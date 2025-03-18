@@ -14,8 +14,8 @@ const Resources = () => {
       <div className="offcanvas-body">
         <div className="card">
           <div className="card-header">DLMM Resources</div>
-          <ul class="list-group list-group-flush">
-            <li class="list-group-item">
+          <ul className="list-group list-group-flush">
+            <li className="list-group-item">
               <a
                 href={`https://thewise.trade/dlmm-guide/`}
                 target="_blank"
@@ -24,7 +24,7 @@ const Resources = () => {
                 Comprehensive DLMM Guide
               </a>
             </li>
-            <li class="list-group-item">
+            <li className="list-group-item">
               <a
                 href="https://solmeteor.ai/"
                 target="_blank"
@@ -33,7 +33,7 @@ const Resources = () => {
                 Solmeteor (meteora trending pools)
               </a>
             </li>
-            <li class="list-group-item">
+            <li className="list-group-item">
               <a
                 href="https://dlmm.geeklad.com/"
                 target="_blank"
@@ -42,7 +42,7 @@ const Resources = () => {
                 Geeklad DLMM opportunities
               </a>
             </li>
-            <li class="list-group-item">
+            <li className="list-group-item">
               <a
                 href="https://lookerstudio.google.com/u/0/reporting/95755595-a3b9-44bb-bb1a-8615c77059f7/page/wmP0D"
                 target="_blank"
@@ -51,7 +51,7 @@ const Resources = () => {
                 Goosedao DLMM opportunities
               </a>
             </li>
-            <li class="list-group-item">
+            <li className="list-group-item">
               <a
                 href="https://todamun.xyz/meteora-monitor"
                 target="_blank"
