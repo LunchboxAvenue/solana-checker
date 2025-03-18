@@ -56,20 +56,20 @@ const Meteora = ({ data }) => {
                     liquidity,
                     fees_24h,
                     apr,
-                    fees,
-                    volume,
+                    //fees,
+                    //volume,
                   } = pair;
 
-                  const {
-                    min_30: min_30_fees,
-                    hour_1: hour_1_fees,
-                    hour_24: hour_24_fees,
-                  } = fees;
-                  const {
-                    min_30: min_30_volume,
-                    hour_1: hour_1_volume,
-                    hour_24: hour_24_volume,
-                  } = volume;
+                  // const {
+                  //   min_30: min_30_fees,
+                  //   hour_1: hour_1_fees,
+                  //   hour_24: hour_24_fees,
+                  // } = fees;
+                  // const {
+                  //   min_30: min_30_volume,
+                  //   hour_1: hour_1_volume,
+                  //   hour_24: hour_24_volume,
+                  // } = volume;
 
                   if (Number(liquidity) > 1) {
                     return (
@@ -91,7 +91,11 @@ const Meteora = ({ data }) => {
                         </th>
                         <td>{bin_step}</td>
                         <td>{base_fee_percentage}%</td>
-                        <td>{max_fee_percentage}%</td>
+                        <td>
+                          {max_fee_percentage
+                            ? Number(max_fee_percentage).toFixed(2) + "%"
+                            : "N/A"}
+                        </td>
                         <td>{formatDollarValue(liquidity)}</td>
                         <td>{formatDollarValue(fees_24h)}</td>
                         <td>{apr ? Number(apr).toFixed(2) + "%" : "N/A"}</td>
