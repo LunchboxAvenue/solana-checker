@@ -14,11 +14,11 @@ const TopHolders = ({ data }) => {
   }
 
   const sliceLength =
-    topHolders && topHolders.length > 7 ? 7 : topHolders.length;
+    topHolders && topHolders.length > 8 ? 8 : topHolders.length;
 
   return (
     <div className="card-body">
-      <table class="table table-striped">
+      <table className="table table-hover">
         <thead>
           <tr>
             <th scope="col">Wallet</th>

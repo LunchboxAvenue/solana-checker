@@ -1,12 +1,13 @@
 import { useState } from "react";
-import Jupiter from "./components/Jupiter";
 import Meteora from "./components/Meteora";
-import InfoTable from "./components/InfoTable";
 import RugCheck from "./components/RugCheck";
 import TopHolders from "./components/TopHolders";
+import About from "./components/About";
+import Resources from "./components/Resources";
+
+const donationWalletAddress = "3k1czCx2S8hTRSzwwCDtszvwNKnmwkNfGJ59h9ffsD4G";
 
 function App() {
-  const [jupiterData, setJupiterData] = useState(null);
   const [meteoraData, setMeteoraData] = useState(null);
   const [tokenAddress, setTokenAddress] = useState(null);
   const [rugCheckData, setRugCheckData] = useState(null);
@@ -16,6 +17,7 @@ function App() {
   const [jupiterIframeIsLoading, setJupiterIframeIsLoading] = useState(false);
   const [trenchBotIframeIsLoading, setTrenchBotIframeIsLoading] =
     useState(false);
+  const [addressIsCopied, setAddressIsCopied] = useState(false);
 
   const handleJupiterIframeIsLoaded = () => {
     setJupiterIframeIsLoading(false);
@@ -23,6 +25,14 @@ function App() {
 
   const handleTrenchBotIframeIsLoaded = () => {
     setTrenchBotIframeIsLoading(false);
+  };
+
+  const copyAddress = () => {
+    navigator.clipboard.writeText(donationWalletAddress);
+    setAddressIsCopied(true);
+    setTimeout(() => {
+      setAddressIsCopied(false);
+    }, 2000);
   };
 
   const getTokenData = async (event) => {
@@ -39,14 +49,6 @@ function App() {
     setTrenchBotIframeIsLoading(true);
 
     setTokenAddress(tokenCA);
-
-    await fetch(`https://api.jup.ag/tokens/v1/token/${tokenCA}`, {
-      headers: { Accept: "application/json" },
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        setJupiterData(data);
-      });
 
     await fetch(
       `https://dlmm-api.meteora.ag/pair/all_with_pagination?include_pool_token_pairs=${tokenCA}-So11111111111111111111111111111111111111112`,
@@ -81,37 +83,100 @@ function App() {
   return (
     <>
       <div className="container">
-        <div className="row justify-content-center col-12 pt-4">
-          <div className="col-3"></div>
-          <div className="col-6">
+        <div
+          style={{ position: "absolute", right: "0", marginRight: "25px" }}
+          className="mt-2"
+        >
+          <button
+            className="btn btn-primary-outline"
+            type="button"
+            data-bs-toggle="offcanvas"
+            data-bs-target="#offcanvasRight"
+            aria-controls="offcanvasRight"
+          >
+            <span
+              style={{ fontSize: "x-large" }}
+              className="bi-question-square"
+            ></span>
+          </button>
+        </div>
+        <div
+          style={{
+            position: "absolute",
+            right: "0",
+            marginRight: "25px",
+          }}
+          className="mt-5"
+        >
+          <button
+            className="btn btn-primary-outline"
+            type="button"
+            data-bs-toggle="offcanvas"
+            data-bs-target="#offcanvasRightResources"
+            aria-controls="offcanvasRightResources"
+          >
+            <span
+              style={{ fontSize: "x-large" }}
+              className="bi-book"
+            ></span>
+          </button>
+        </div>
+        <div className="row justify-content-center pt-4">
+          <div className={`${tokenAddress ? "" : "col-3"}`}></div>
+          <div className={`${tokenAddress ? "col-8" : "col-6"}`}>
             <form method="post" onSubmit={getTokenData}>
-              <div className="mb-3">
+              <div className="input-group">
                 <input
                   id="contractAddress"
                   type="text"
                   placeholder="Solana CA"
                   name="contractAddress"
                   className="form-control"
+                  aria-describedby="findButton"
                 />
+                <button
+                  type="submit"
+                  className="btn btn-success"
+                  id="findButton"
+                >
+                  Find
+                </button>
               </div>
-              <button
-                type="submit"
-                className="btn btn-primary w-100 py-2"
-                id="findButton"
-              >
-                Find
-              </button>
             </form>
           </div>
-          <div className="col-3"></div>
+          <div className={`${tokenAddress ? "col-4" : "col-3"}`}>
+            {tokenAddress && (
+              <div className="card">
+                <div className="card-header" style={{ textAlign: "center" }}>
+                  <img
+                    src="/gmgn.png"
+                    alt="Gmgn Logo"
+                    className="company-logo"
+                  />
+                  <a
+                    href={`https://gmgn.ai/sol/token/${tokenAddress}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    GMGN
+                  </a>
+                </div>
+              </div>
+            )}
+          </div>
         </div>
 
         {/* First row (Jupiter, RugCheck, Info*/}
-        <div className="row mt-5">
+        <div className="row mt-4">
           <div className="col-4">
             {tokenAddress && (
               <div className="card">
-                <div class="card-header" style={{ textAlign: "center" }}>
+                <div className="card-header" style={{ textAlign: "center" }}>
+                  <img
+                    src="https://portfolio.jup.ag/logo.svg"
+                    alt="Bubblemaps Logo"
+                    className="company-logo"
+                  />
                   <a
                     href={`https://jup.ag/id/tokens/${tokenAddress}`}
                     target="_blank"
@@ -131,7 +196,10 @@ function App() {
                   }
                 >
                   {jupiterIframeIsLoading && (
-                    <div class="spinner-border text-secondary" role="status" />
+                    <div
+                      className="spinner-border text-secondary"
+                      role="status"
+                    />
                   )}
                   <iframe
                     style={{
@@ -152,18 +220,26 @@ function App() {
           <div className="col-4">
             {tokenAddress && (
               <div className="card" style={{ height: "451px" }}>
-                <div class="card-header" style={{ textAlign: "center" }}>
+                <div className="card-header" style={{ textAlign: "center" }}>
+                  <img
+                    src="https://rugcheck.xyz/favicon.jpg"
+                    alt="Rugcheck Logo"
+                    className="company-logo"
+                  />
                   <a
                     href={`https://rugcheck.xyz/tokens/${tokenAddress}`}
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    RugCheck
+                    Rug Check
                   </a>
                 </div>
                 {rugCheckIsLoading && (
                   <div className="card-body align-items-center d-flex justify-content-center">
-                    <div class="spinner-border text-secondary" role="status" />
+                    <div
+                      className="spinner-border text-secondary"
+                      role="status"
+                    />
                   </div>
                 )}
                 {!rugCheckIsLoading && rugCheckError && (
@@ -178,7 +254,12 @@ function App() {
           <div className="col-4" style={{ maxHeight: "408px" }}>
             {tokenAddress && (
               <div className="card" style={{ height: "451px" }}>
-                <div class="card-header" style={{ textAlign: "center" }}>
+                <div className="card-header" style={{ textAlign: "center" }}>
+                  <img
+                    src="https://app.bubblemaps.io/img/bubblemaps.51902376.svg"
+                    alt="Bubblemaps Logo"
+                    className="company-logo"
+                  />
                   <a
                     href={`https://app.bubblemaps.io/sol/token/${tokenAddress}`}
                     target="_blank"
@@ -189,7 +270,10 @@ function App() {
                 </div>
                 {rugCheckIsLoading && (
                   <div className="card-body align-items-center d-flex justify-content-center">
-                    <div class="spinner-border text-secondary" role="status" />
+                    <div
+                      className="spinner-border text-secondary"
+                      role="status"
+                    />
                   </div>
                 )}
                 {!rugCheckIsLoading && <TopHolders data={rugCheckData} />}
@@ -199,17 +283,23 @@ function App() {
         </div>
 
         {/* Second row (trenchbot iframe)*/}
-        <div className="row mt-5" style={{ height: "676px" }}>
+        <div className="row mt-4" style={{ height: "676px" }}>
           <div className="col-12">
             {tokenAddress && (
               <div className="card">
-                <div class="card-header" style={{ textAlign: "center" }}>
+                <div className="card-header" style={{ textAlign: "center" }}>
+                  <img
+                    src="https://trench.bot/logo.webp"
+                    alt="Bubblemaps Logo"
+                    className="company-logo"
+                    style={{ height: "25px", paddingBottom: "3px" }}
+                  />
                   <a
                     href={`https://trench.bot/bundles/${contractAddress.value}`}
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    Trench Bot
+                    Trench Radar
                   </a>
                 </div>
                 <div
@@ -223,7 +313,10 @@ function App() {
                   }
                 >
                   {trenchBotIframeIsLoading && (
-                    <div class="spinner-border text-secondary" role="status" />
+                    <div
+                      className="spinner-border text-secondary"
+                      role="status"
+                    />
                   )}
                   <iframe
                     className="w-100"
@@ -240,7 +333,7 @@ function App() {
         </div>
 
         {/* Third row (meteora table)*/}
-        <div className="row mt-5 mb-5">
+        <div className="row mt-4 mb-2">
           <div className="col-12">
             {tokenAddress && (
               <div className="card">
@@ -249,7 +342,10 @@ function App() {
                     className="card-body align-items-center d-flex justify-content-center"
                     style={{ minHeight: "200px" }}
                   >
-                    <div class="spinner-border text-secondary" role="status" />
+                    <div
+                      className="spinner-border text-secondary"
+                      role="status"
+                    />
                   </div>
                 )}
                 {!meteoraIsLoading && <Meteora data={meteoraData} />}
@@ -257,6 +353,52 @@ function App() {
             )}
           </div>
         </div>
+
+        {/* Thank you*/}
+        {tokenAddress && (
+          <div className="row mt-3">
+            <div
+              className="col-12 align-items-center d-flex justify-content-center"
+              style={{ cursor: "pointer" }}
+              onClick={copyAddress}
+            >
+              <span style={{ fontSize: "large" }} className="bi-cup-hot"></span>
+              <span></span>
+              <span style={{ paddingLeft: "8px" }}>
+                {donationWalletAddress}
+              </span>
+              {addressIsCopied && (
+                <div
+                  className="alert alert-success"
+                  role="alert"
+                  style={{ marginLeft: "15px" }}
+                >
+                  Copied!
+                </div>
+              )}
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* Info */}
+      <div
+        className="offcanvas offcanvas-end"
+        tabindex="-1"
+        id="offcanvasRight"
+        aria-labelledby="offcanvasRightLabel"
+      >
+        <About />
+      </div>
+
+      {/* Resources */}
+      <div
+        className="offcanvas offcanvas-end"
+        tabindex="-1"
+        id="offcanvasRightResources"
+        aria-labelledby="offcanvasRightResourcesLabel"
+      >
+        <Resources />
       </div>
     </>
   );

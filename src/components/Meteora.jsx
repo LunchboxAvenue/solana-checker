@@ -24,7 +24,7 @@ const Meteora = ({ data }) => {
             className="card-body h-100 d-flex justify-content-center align-items-center col-12 mb-3"
             style={{ minHeight: "200px" }}
           >
-            No pools exist for this token yet
+            No meteora pools exist for this token yet
           </div>
         ))}
       {pairs && pairs.length > 0 && (
@@ -75,6 +75,12 @@ const Meteora = ({ data }) => {
                     return (
                       <tr key={address}>
                         <th>
+                          <img
+                            src="https://app.meteora.ag/icons/logo.svg"
+                            alt="Bubblemaps Logo"
+                            className="company-logo"
+                            style={{ height: "25px", paddingBottom: "3px" }}
+                          />
                           <a
                             href={`https://app.meteora.ag/dlmm/${address}`}
                             target="_blank"
