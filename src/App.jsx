@@ -83,47 +83,49 @@ function App() {
   return (
     <>
       <div className="container">
-        <div
-          style={{ position: "absolute", right: "0", marginRight: "25px" }}
-          className="mt-2"
-        >
-          <button
-            className="btn btn-primary-outline"
-            type="button"
-            data-bs-toggle="offcanvas"
-            data-bs-target="#offcanvasRight"
-            aria-controls="offcanvasRight"
+        <div id="helpButtons">
+          <div
+            style={{ position: "absolute", right: "0", marginRight: "25px" }}
+            className="mt-2"
+            id="aboutButton"
           >
-            <span
-              style={{ fontSize: "x-large" }}
-              className="bi-question-square"
-            ></span>
-          </button>
-        </div>
-        <div
-          style={{
-            position: "absolute",
-            right: "0",
-            marginRight: "25px",
-          }}
-          className="mt-5"
-        >
-          <button
-            className="btn btn-primary-outline"
-            type="button"
-            data-bs-toggle="offcanvas"
-            data-bs-target="#offcanvasRightResources"
-            aria-controls="offcanvasRightResources"
+            <button
+              className="btn btn-primary-outline"
+              type="button"
+              data-bs-toggle="offcanvas"
+              data-bs-target="#offcanvasRight"
+              aria-controls="offcanvasRight"
+            >
+              <span
+                style={{ fontSize: "x-large" }}
+                className="bi-question-square"
+              ></span>
+            </button>
+          </div>
+          <div
+            style={{
+              position: "absolute",
+              right: "0",
+              marginRight: "25px",
+            }}
+            className="mt-5"
+            id="resourceButton"
           >
-            <span
-              style={{ fontSize: "x-large" }}
-              className="bi-book"
-            ></span>
-          </button>
+            <button
+              className="btn btn-primary-outline"
+              type="button"
+              data-bs-toggle="offcanvas"
+              data-bs-target="#offcanvasRightResources"
+              aria-controls="offcanvasRightResources"
+            >
+              <span style={{ fontSize: "x-large" }} className="bi-book"></span>
+            </button>
+          </div>
         </div>
+
         <div className="row justify-content-center pt-4">
-          <div className={`${tokenAddress ? "" : "col-3"}`}></div>
-          <div className={`${tokenAddress ? "col-8" : "col-6"}`}>
+          <div className={`${tokenAddress ? "" : "col-1 col-xl-3"}`}></div>
+          <div className={`${tokenAddress ? "col-8" : "col-10 col-xl-6"}`}>
             <form method="post" onSubmit={getTokenData}>
               <div className="input-group">
                 <input
@@ -144,7 +146,7 @@ function App() {
               </div>
             </form>
           </div>
-          <div className={`${tokenAddress ? "col-4" : "col-3"}`}>
+          <div className={`${tokenAddress ? "col-4" : "col-1 col-xl-3"}`}>
             {tokenAddress && (
               <div className="card">
                 <div className="card-header" style={{ textAlign: "center" }}>
@@ -283,7 +285,7 @@ function App() {
         </div>
 
         {/* Second row (trenchbot iframe)*/}
-        <div className="row mt-4" style={{ height: "676px" }}>
+        <div className="row mt-4" style={{ height: "676px" }} id="trenchRadarIframe">
           <div className="col-12">
             {tokenAddress && (
               <div className="card">
@@ -356,7 +358,7 @@ function App() {
 
         {/* Thank you*/}
         {tokenAddress && (
-          <div className="row mt-3">
+          <div className="row mt-3" id="thankYou">
             <div
               className="col-12 align-items-center d-flex justify-content-center"
               style={{ cursor: "pointer" }}
