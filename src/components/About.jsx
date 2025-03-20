@@ -24,12 +24,19 @@ const About = () => {
         </p>
         <p>
           This was mainly inspired by{" "}
-          <a href="https://x.com/SebMontgomery" alt="SebMontgomery twitter">
+          <a
+            href="https://x.com/SebMontgomery"
+            alt="SebMontgomery twitter"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             @Seb Monty
           </a>
           , who mentioned{" "}
           <a
             href="https://x.com/NaojNc/status/1897708760027566562"
+            target="_blank"
+            rel="noopener noreferrer"
             alt="NaojNc twitter"
           >
             @NAOJ's twtter post
@@ -42,9 +49,21 @@ const About = () => {
           <a
             href="https://x.com/LunchboxSolana/"
             alt="lunchbox.sol twitter"
+            target="_blank"
+            rel="noopener noreferrer"
             className="mt-5"
           >
             @Lunchbox.Sol
+          </a>
+          or on telegram:{" "}
+          <a
+            href="https://t.me/lunchbox_sol"
+            alt="lunchbox.sol telegram"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mt-5"
+          >
+            t.me/lunchbox_sol
           </a>
         </p>
         <p>tldr:</p>

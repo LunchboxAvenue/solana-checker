@@ -136,6 +136,7 @@ function App() {
                   name="contractAddress"
                   className="form-control"
                   aria-describedby="findButton"
+                  style={{ paddingRight: "41px" }}
                 />
                 {tokenAddress && (
                   <button
