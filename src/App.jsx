@@ -137,6 +137,15 @@ function App() {
                   className="form-control"
                   aria-describedby="findButton"
                 />
+                {tokenAddress && (
+                  <button
+                    type="reset"
+                    className="btn bg-transparent"
+                    style={{ marginLeft: "-41px", zIndex: 100 }}
+                  >
+                    <i className="bi-x-circle"></i>
+                  </button>
+                )}
                 <button
                   type="submit"
                   className="btn btn-success"
@@ -246,7 +255,9 @@ function App() {
                   </div>
                 )}
                 {!rugCheckIsLoading && rugCheckError && (
-                  <div children="card-body">{rugCheckError}</div>
+                  <div children="card-body">
+                    Getting data from rugcheck failed
+                  </div>
                 )}
                 {!rugCheckIsLoading && !rugCheckError && (
                   <RugCheck data={rugCheckData} />
