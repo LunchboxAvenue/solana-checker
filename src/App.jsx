@@ -18,7 +18,10 @@ function App() {
   const [jupiterIframeIsLoading, setJupiterIframeIsLoading] = useState(false);
   const [trenchBotIframeIsLoading, setTrenchBotIframeIsLoading] =
     useState(false);
+  const [gmGnIframeIsLoading, setGmGnIframeIsLoading] = useState(false);
   const [addressIsCopied, setAddressIsCopied] = useState(false);
+  const [jupData, setJupData] = useState(null);
+  const [jupDataLoading, setJupDataLoading] = useState(false);
 
   const handleJupiterIframeIsLoaded = () => {
     setJupiterIframeIsLoading(false);
@@ -26,6 +29,10 @@ function App() {
 
   const handleTrenchBotIframeIsLoaded = () => {
     setTrenchBotIframeIsLoading(false);
+  };
+
+  const handleGmGnIframeIsLoaded = () => {
+    setGmGnIframeIsLoading(false);
   };
 
   const copyAddress = () => {
@@ -48,6 +55,8 @@ function App() {
     setRugCheckIsLoading(true);
     setJupiterIframeIsLoading(true);
     setTrenchBotIframeIsLoading(true);
+    setGmGnIframeIsLoading(true);
+    setJupDataLoading(true);
 
     setTokenAddress(tokenCA);
 
@@ -65,6 +74,21 @@ function App() {
       .catch((error) => {
         // Todo error
         setMeteoraIsLoading(false);
+      });
+
+    // get organic score
+    await fetch(`https://fe-api.jup.ag/api/v1/tokens/search?query=${tokenCA}`, {
+      headers: { Accept: "application/json" },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data && data.tokens && data.tokens.length) {
+          setJupData(data.tokens[0]);
+        }
+        setJupDataLoading(false);
+      })
+      .catch((error) => {
+        setJupDataLoading(false);
       });
 
     await fetch(`https://api.rugcheck.xyz/v1/tokens/${tokenCA}/report`, {
@@ -159,22 +183,28 @@ function App() {
           </div>
           <div className={`${tokenAddress ? "col-4" : "col-1 col-xl-3"}`}>
             {tokenAddress && (
-              <div className="card">
-                <div className="card-header" style={{ textAlign: "center" }}>
-                  <img
-                    src="/gmgn.png"
-                    alt="Gmgn Logo"
-                    className="company-logo"
-                  />
-                  <a
-                    href={`https://gmgn.ai/sol/token/${tokenAddress}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
+              <>
+                {!jupDataLoading && (
+                  <div
+                    className={`alert organic-score-alert ${
+                      jupData.organicScore > 75
+                        ? "alert-success"
+                        : jupData.organicScore <= 0
+                        ? "alert-danger"
+                        : "alert-warning"
+                    }`}
+                    role="alert"
+                    style={{ cursor: "help" }}
+                    data-toggle="tooltip"
+                    title={"Jupiter trenches organic score"}
                   >
-                    GMGN
-                  </a>
-                </div>
-              </div>
+                    <span>
+                      Organic score:{" "}
+                      {jupData && Number(jupData.organicScore).toFixed()}
+                    </span>
+                  </div>
+                )}
+              </>
             )}
           </div>
         </div>
@@ -292,6 +322,53 @@ function App() {
                   </div>
                 )}
                 {!rugCheckIsLoading && <TopHolders data={rugCheckData} />}
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* 1.5 row (gmgn iframe)*/}
+        <div className="row mt-4" style={{ height: "676px" }} id="gmgnIframe">
+          <div className="col-12">
+            {tokenAddress && (
+              <div className="card">
+                <div className="card-header" style={{ textAlign: "center" }}>
+                  <img
+                    src="/gmgn.png"
+                    alt="Gmgn Logo"
+                    className="company-logo"
+                  />
+                  <a
+                    href={`https://gmgn.ai/sol/token/${tokenAddress}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    GMGN
+                  </a>
+                </div>
+                <div
+                  className={`card-body ${
+                    gmGnIframeIsLoading
+                      ? "align-items-center d-flex justify-content-center"
+                      : ""
+                  }`}
+                  style={gmGnIframeIsLoading ? { minHeight: "637.23px" } : null}
+                >
+                  {gmGnIframeIsLoading && (
+                    <div
+                      className="spinner-border text-secondary"
+                      role="status"
+                    />
+                  )}
+                  <iframe
+                    className="w-100"
+                    style={{ height: "600px" }}
+                    onLoad={handleGmGnIframeIsLoaded}
+                    scrolling="no"
+                    hidden={gmGnIframeIsLoading}
+                    src={`https://www.gmgn.cc/kline/sol/${tokenAddress}`}
+                  />
+                </div>
               </div>
             )}
           </div>
