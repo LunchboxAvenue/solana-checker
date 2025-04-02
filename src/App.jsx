@@ -184,6 +184,20 @@ function App() {
           <div className={`${tokenAddress ? "col-4" : "col-1 col-xl-3"}`}>
             {tokenAddress && (
               <>
+                {jupDataLoading && (
+                  <div
+                    className={`alert organic-score-alert alert-dark`}
+                    role="alert"
+                    style={{ cursor: "help" }}
+                    data-toggle="tooltip"
+                    title={"Jupiter trenches organic score loading"}
+                  >
+                    <div
+                      className="spinner-border text-secondary"
+                      role="status"
+                    />
+                  </div>
+                )}
                 {!jupDataLoading && (
                   <div
                     className={`alert organic-score-alert ${
