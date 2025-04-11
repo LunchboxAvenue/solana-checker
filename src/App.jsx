@@ -1,14 +1,17 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Meteora from "./components/Meteora";
 import RugCheck from "./components/RugCheck";
 import TopHolders from "./components/TopHolders";
 import About from "./components/About";
 import Resources from "./components/Resources";
 import { Analytics } from "@vercel/analytics/react";
+import { useParams } from "react-router";
 
 const donationWalletAddress = "3k1czCx2S8hTRSzwwCDtszvwNKnmwkNfGJ59h9ffsD4G";
 
 function App() {
+  const { tokenCA: tokenFromParams } = useParams();
+  const [tokenInputValue, setTokenInputValue] = useState(tokenFromParams || "");
   const [meteoraData, setMeteoraData] = useState(null);
   const [tokenAddress, setTokenAddress] = useState(null);
   const [rugCheckData, setRugCheckData] = useState(null);
@@ -50,7 +53,18 @@ function App() {
     const tokenCA = formData.get("contractAddress");
 
     if (!tokenCA) return;
+    window.history.replaceState(null, "DLMM Checker", `/${tokenCA}`);
+    await loadTokenInformation(tokenCA);
+  };
 
+  useEffect(() => {
+    if (tokenFromParams) {
+      loadTokenInformation(tokenFromParams);
+      setTokenInputValue(tokenFromParams);
+    }
+  }, []);
+
+  const loadTokenInformation = async (tokenCA) => {
     setMeteoraIsLoading(true);
     setRugCheckIsLoading(true);
     setJupiterIframeIsLoading(true);
@@ -161,12 +175,17 @@ function App() {
                   className="form-control"
                   aria-describedby="findButton"
                   style={{ paddingRight: "41px" }}
+                  value={tokenInputValue}
+                  onChange={({ target: { value } }) =>
+                    setTokenInputValue(value)
+                  }
                 />
                 {tokenAddress && (
                   <button
                     type="reset"
                     className="btn bg-transparent"
                     style={{ marginLeft: "-41px", zIndex: 100 }}
+                    onClick={() => setTokenInputValue("")}
                   >
                     <i className="bi-x-circle"></i>
                   </button>
@@ -466,7 +485,11 @@ function App() {
 
         {/* Thank you*/}
         {tokenAddress && (
-          <div className="row mt-3" id="thankYou" style={{marginBottom: '20px'}}>
+          <div
+            className="row mt-3"
+            id="thankYou"
+            style={{ marginBottom: "20px" }}
+          >
             <div
               className="col-12 align-items-center d-flex justify-content-center"
               style={{ cursor: "pointer" }}
