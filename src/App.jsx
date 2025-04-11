@@ -213,7 +213,7 @@ function App() {
                     title={"Jupiter trenches organic score"}
                   >
                     <span>
-                      Organic score:{" "}
+                      Organic:{" "}
                       {jupData && Number(jupData.organicScore).toFixed()}
                     </span>
                   </div>
@@ -342,9 +342,9 @@ function App() {
         </div>
 
         {/* 1.5 row (gmgn iframe)*/}
-        <div className="row mt-4" style={{ height: "676px" }} id="gmgnIframe">
-          <div className="col-12">
-            {tokenAddress && (
+        {tokenAddress && (
+          <div className="row mt-4" style={{ height: "676px" }} id="gmgnIframe">
+            <div className="col-12">
               <div className="card">
                 <div className="card-header" style={{ textAlign: "center" }}>
                   <img
@@ -384,18 +384,18 @@ function App() {
                   />
                 </div>
               </div>
-            )}
+            </div>
           </div>
-        </div>
+        )}
 
         {/* Second row (trenchbot iframe)*/}
-        <div
-          className="row mt-4"
-          style={{ height: "676px" }}
-          id="trenchRadarIframe"
-        >
-          <div className="col-12">
-            {tokenAddress && (
+        {tokenAddress && (
+          <div
+            className="row mt-4"
+            style={{ height: "676px" }}
+            id="trenchRadarIframe"
+          >
+            <div className="col-12">
               <div className="card">
                 <div className="card-header" style={{ textAlign: "center" }}>
                   <img
@@ -438,9 +438,9 @@ function App() {
                   />
                 </div>
               </div>
-            )}
+            </div>
           </div>
-        </div>
+        )}
 
         {/* Third row (meteora table)*/}
         <div className="row mt-4 mb-2">
@@ -466,7 +466,7 @@ function App() {
 
         {/* Thank you*/}
         {tokenAddress && (
-          <div className="row mt-3" id="thankYou">
+          <div className="row mt-3" id="thankYou" style={{marginBottom: '20px'}}>
             <div
               className="col-12 align-items-center d-flex justify-content-center"
               style={{ cursor: "pointer" }}
