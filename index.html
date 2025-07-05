@@ -20,7 +20,15 @@
         margin-right: 10px;
       }
 
-      .background {
+      /* .background {
+        background-image: linear-gradient(
+          to right,
+          rgba(30, 28, 68, 255),
+          rgba(35, 16, 48, 255)
+        );
+      } */
+
+      #contractAddress {
         background-image: linear-gradient(
           to right,
           rgba(30, 28, 68, 255),
@@ -45,6 +53,16 @@
       .company-logo {
         margin-right: 5px;
         height: 18px;
+      }
+
+      .card {
+        background-image: linear-gradient(
+          to right,
+          rgba(30, 28, 68, 255),
+          rgba(35, 16, 48, 255)
+        );
+
+        border: 1px #5d0ac7 solid;
       }
 
       @media only screen and (max-width: 1475px) {
@@ -90,6 +108,16 @@
         /* .organic-score-alert {
           font-size: small !important;
         } */
+      }
+
+      body {
+        background-image: url("./src/assets/bg.jpg");
+        background-size: cover;
+        min-height: 100vh;
+      }
+
+      .table > :not(caption) > * > * {
+        background: transparent;
       }
     </style>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />

@@ -25,6 +25,7 @@ function App() {
   const [addressIsCopied, setAddressIsCopied] = useState(false);
   const [jupData, setJupData] = useState(null);
   const [jupDataLoading, setJupDataLoading] = useState(false);
+  const [tokenHasError, setTokenHasError] = useState(false);
 
   const handleJupiterIframeIsLoaded = () => {
     setJupiterIframeIsLoading(false);
@@ -98,11 +99,15 @@ function App() {
       .then((data) => {
         if (data && data.tokens && data.tokens.length) {
           setJupData(data.tokens[0]);
+          setTokenHasError(false);
+        } else {
+          setTokenHasError(true);
         }
         setJupDataLoading(false);
       })
       .catch((error) => {
         setJupDataLoading(false);
+        setTokenHasError(true);
       });
 
     await fetch(`https://api.rugcheck.xyz/v1/tokens/${tokenCA}/report`, {
@@ -242,246 +247,281 @@ function App() {
           </div>
         </div>
 
-        {/* First row (Jupiter, RugCheck, Info*/}
-        <div className="row mt-4">
-          <div className="col-12 col-lg-4">
-            {tokenAddress && (
-              <div className="card">
-                <div className="card-header" style={{ textAlign: "center" }}>
-                  <img
-                    src="https://portfolio.jup.ag/logo.svg"
-                    alt="Bubblemaps Logo"
-                    className="company-logo"
-                  />
-                  <a
-                    href={`https://jup.ag/id/tokens/${tokenAddress}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    Jupiter
-                  </a>
-                </div>
-                <div
-                  className={`card-body ${
-                    jupiterIframeIsLoading
-                      ? "align-items-center d-flex justify-content-center"
-                      : ""
-                  }`}
-                  style={
-                    jupiterIframeIsLoading ? { minHeight: "407.5px" } : null
-                  }
-                >
-                  {jupiterIframeIsLoading && (
-                    <div
-                      className="spinner-border text-secondary"
-                      role="status"
-                    />
-                  )}
-                  <iframe
-                    style={{
-                      height: "370px",
-                      position: "relative",
-                      width: "100%",
-                    }}
-                    onLoad={handleJupiterIframeIsLoaded}
-                    scrolling="no"
-                    hidden={jupiterIframeIsLoading}
-                    src={`https://jup.ag/id/tokens/${tokenAddress}`}
-                  />
-                </div>
-              </div>
-            )}
-          </div>
-
-          <div className="col-12 col-lg-4">
-            {tokenAddress && (
-              <div className="card" style={{ height: "451px" }}>
-                <div className="card-header" style={{ textAlign: "center" }}>
-                  <img
-                    src="https://rugcheck.xyz/favicon.jpg"
-                    alt="Rugcheck Logo"
-                    className="company-logo"
-                  />
-                  <a
-                    href={`https://rugcheck.xyz/tokens/${tokenAddress}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    Rug Check
-                  </a>
-                </div>
-                {rugCheckIsLoading && (
-                  <div className="card-body align-items-center d-flex justify-content-center">
-                    <div
-                      className="spinner-border text-secondary"
-                      role="status"
-                    />
-                  </div>
-                )}
-                {!rugCheckIsLoading && rugCheckError && (
-                  <div children="card-body">
-                    Getting data from rugcheck failed
-                  </div>
-                )}
-                {!rugCheckIsLoading && !rugCheckError && (
-                  <RugCheck data={rugCheckData} />
-                )}
-              </div>
-            )}
-          </div>
-          <div className="col-12 col-lg-4" style={{ maxHeight: "408px" }}>
-            {tokenAddress && (
-              <div className="card" style={{ height: "451px" }}>
-                <div className="card-header" style={{ textAlign: "center" }}>
-                  <img
-                    src="https://app.bubblemaps.io/img/bubblemaps.51902376.svg"
-                    alt="Bubblemaps Logo"
-                    className="company-logo"
-                  />
-                  <a
-                    href={`https://app.bubblemaps.io/sol/token/${tokenAddress}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    Bubble Maps
-                  </a>
-                </div>
-                {rugCheckIsLoading && (
-                  <div className="card-body align-items-center d-flex justify-content-center">
-                    <div
-                      className="spinner-border text-secondary"
-                      role="status"
-                    />
-                  </div>
-                )}
-                {!rugCheckIsLoading && <TopHolders data={rugCheckData} />}
-              </div>
-            )}
-          </div>
-        </div>
-
-        {/* 1.5 row (gmgn iframe)*/}
-        {tokenAddress && (
-          <div className="row mt-4" style={{ height: "676px" }} id="gmgnIframe">
-            <div className="col-12">
-              <div className="card">
-                <div className="card-header" style={{ textAlign: "center" }}>
-                  <img
-                    src="/gmgn.png"
-                    alt="Gmgn Logo"
-                    className="company-logo"
-                  />
-                  <a
-                    href={`https://gmgn.ai/sol/token/${tokenAddress}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    GMGN
-                  </a>
-                </div>
-                <div
-                  className={`card-body ${
-                    gmGnIframeIsLoading
-                      ? "align-items-center d-flex justify-content-center"
-                      : ""
-                  }`}
-                  style={gmGnIframeIsLoading ? { minHeight: "637.23px" } : null}
-                >
-                  {gmGnIframeIsLoading && (
-                    <div
-                      className="spinner-border text-secondary"
-                      role="status"
-                    />
-                  )}
-                  <iframe
-                    className="w-100"
-                    style={{ height: "600px" }}
-                    onLoad={handleGmGnIframeIsLoaded}
-                    scrolling="no"
-                    hidden={gmGnIframeIsLoading}
-                    src={`https://www.gmgn.cc/kline/sol/${tokenAddress}`}
-                  />
-                </div>
-              </div>
+        {tokenHasError && !jupDataLoading && (
+          <div className="card mt-2" style={{ height: "200px" }}>
+            <div className="card-body align-items-center d-flex justify-content-center">
+              Invalid token address
             </div>
           </div>
         )}
 
-        {/* Second row (trenchbot iframe)*/}
-        {tokenAddress && (
-          <div
-            className="row mt-4"
-            style={{ height: "676px" }}
-            id="trenchRadarIframe"
-          >
-            <div className="col-12">
-              <div className="card">
-                <div className="card-header" style={{ textAlign: "center" }}>
-                  <img
-                    src="https://trench.bot/logo.webp"
-                    alt="Bubblemaps Logo"
-                    className="company-logo"
-                    style={{ height: "25px", paddingBottom: "3px" }}
-                  />
-                  <a
-                    href={`https://trench.bot/bundles/${contractAddress.value}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    Trench Radar
-                  </a>
-                </div>
-                <div
-                  className={`card-body ${
-                    trenchBotIframeIsLoading
-                      ? "align-items-center d-flex justify-content-center"
-                      : ""
-                  }`}
-                  style={
-                    trenchBotIframeIsLoading ? { minHeight: "637.23px" } : null
-                  }
-                >
-                  {trenchBotIframeIsLoading && (
+        {!tokenHasError && (
+          <>
+            {/* First row (Jupiter, RugCheck, Info*/}
+            <div className="row mt-4">
+              <div className="col-12 col-lg-4">
+                {tokenAddress && (
+                  <div className="card">
                     <div
-                      className="spinner-border text-secondary"
-                      role="status"
-                    />
-                  )}
-                  <iframe
-                    className="w-100"
-                    style={{ height: "600px" }}
-                    onLoad={handleTrenchBotIframeIsLoaded}
-                    scrolling="no"
-                    hidden={trenchBotIframeIsLoading}
-                    src={`https://trench.bot/bundles/${tokenAddress}`}
-                  />
-                </div>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* Third row (meteora table)*/}
-        <div className="row mt-4 mb-2">
-          <div className="col-12">
-            {tokenAddress && (
-              <div className="card">
-                {meteoraIsLoading && (
-                  <div
-                    className="card-body align-items-center d-flex justify-content-center"
-                    style={{ minHeight: "200px" }}
-                  >
+                      className="card-header"
+                      style={{ textAlign: "center" }}
+                    >
+                      <img
+                        src="https://portfolio.jup.ag/logo.svg"
+                        alt="Bubblemaps Logo"
+                        className="company-logo"
+                      />
+                      <a
+                        href={`https://jup.ag/id/tokens/${tokenAddress}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        Jupiter
+                      </a>
+                    </div>
                     <div
-                      className="spinner-border text-secondary"
-                      role="status"
-                    />
+                      className={`card-body ${
+                        jupiterIframeIsLoading
+                          ? "align-items-center d-flex justify-content-center"
+                          : ""
+                      }`}
+                      style={
+                        jupiterIframeIsLoading ? { minHeight: "407.5px" } : null
+                      }
+                    >
+                      {jupiterIframeIsLoading && (
+                        <div
+                          className="spinner-border text-secondary"
+                          role="status"
+                        />
+                      )}
+                      <iframe
+                        style={{
+                          height: "370px",
+                          position: "relative",
+                          width: "100%",
+                        }}
+                        onLoad={handleJupiterIframeIsLoaded}
+                        scrolling="no"
+                        hidden={jupiterIframeIsLoading}
+                        src={`https://jup.ag/id/tokens/${tokenAddress}`}
+                      />
+                    </div>
                   </div>
                 )}
-                {!meteoraIsLoading && <Meteora data={meteoraData} />}
+              </div>
+
+              <div className="col-12 col-lg-4">
+                {tokenAddress && (
+                  <div className="card" style={{ height: "451px" }}>
+                    <div
+                      className="card-header"
+                      style={{ textAlign: "center" }}
+                    >
+                      <img
+                        src="https://rugcheck.xyz/favicon.jpg"
+                        alt="Rugcheck Logo"
+                        className="company-logo"
+                      />
+                      <a
+                        href={`https://rugcheck.xyz/tokens/${tokenAddress}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        Rug Check
+                      </a>
+                    </div>
+                    {rugCheckIsLoading && (
+                      <div className="card-body align-items-center d-flex justify-content-center">
+                        <div
+                          className="spinner-border text-secondary"
+                          role="status"
+                        />
+                      </div>
+                    )}
+                    {!rugCheckIsLoading && rugCheckError && (
+                      <div children="card-body">
+                        Getting data from rugcheck failed
+                      </div>
+                    )}
+                    {!rugCheckIsLoading && !rugCheckError && (
+                      <RugCheck data={rugCheckData} />
+                    )}
+                  </div>
+                )}
+              </div>
+              <div className="col-12 col-lg-4" style={{ maxHeight: "408px" }}>
+                {tokenAddress && (
+                  <div className="card" style={{ height: "451px" }}>
+                    <div
+                      className="card-header"
+                      style={{ textAlign: "center" }}
+                    >
+                      <img
+                        src="https://app.bubblemaps.io/img/bubblemaps.51902376.svg"
+                        alt="Bubblemaps Logo"
+                        className="company-logo"
+                      />
+                      <a
+                        href={`https://app.bubblemaps.io/sol/token/${tokenAddress}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        Bubble Maps
+                      </a>
+                    </div>
+                    {rugCheckIsLoading && (
+                      <div className="card-body align-items-center d-flex justify-content-center">
+                        <div
+                          className="spinner-border text-secondary"
+                          role="status"
+                        />
+                      </div>
+                    )}
+                    {!rugCheckIsLoading && <TopHolders data={rugCheckData} />}
+                  </div>
+                )}
+              </div>
+            </div>
+
+            {/* 1.5 row (gmgn iframe)*/}
+            {tokenAddress && (
+              <div
+                className="row mt-4"
+                style={{ height: "676px" }}
+                id="gmgnIframe"
+              >
+                <div className="col-12">
+                  <div className="card">
+                    <div
+                      className="card-header"
+                      style={{ textAlign: "center" }}
+                    >
+                      <img
+                        src="/gmgn.png"
+                        alt="Gmgn Logo"
+                        className="company-logo"
+                      />
+                      <a
+                        href={`https://gmgn.ai/sol/token/${tokenAddress}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        GMGN
+                      </a>
+                    </div>
+                    <div
+                      className={`card-body ${
+                        gmGnIframeIsLoading
+                          ? "align-items-center d-flex justify-content-center"
+                          : ""
+                      }`}
+                      style={
+                        gmGnIframeIsLoading ? { minHeight: "637.23px" } : null
+                      }
+                    >
+                      {gmGnIframeIsLoading && (
+                        <div
+                          className="spinner-border text-secondary"
+                          role="status"
+                        />
+                      )}
+                      <iframe
+                        className="w-100"
+                        style={{ height: "600px" }}
+                        onLoad={handleGmGnIframeIsLoaded}
+                        scrolling="no"
+                        hidden={gmGnIframeIsLoading}
+                        src={`https://www.gmgn.cc/kline/sol/${tokenAddress}`}
+                      />
+                    </div>
+                  </div>
+                </div>
               </div>
             )}
-          </div>
-        </div>
+
+            {/* Second row (trenchbot iframe)*/}
+            {tokenAddress && (
+              <div
+                className="row mt-4"
+                style={{ height: "676px" }}
+                id="trenchRadarIframe"
+              >
+                <div className="col-12">
+                  <div className="card">
+                    <div
+                      className="card-header"
+                      style={{ textAlign: "center" }}
+                    >
+                      <img
+                        src="https://trench.bot/logo.webp"
+                        alt="Bubblemaps Logo"
+                        className="company-logo"
+                        style={{ height: "25px", paddingBottom: "3px" }}
+                      />
+                      <a
+                        href={`https://trench.bot/bundles/${contractAddress.value}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        Trench Radar
+                      </a>
+                    </div>
+                    <div
+                      className={`card-body ${
+                        trenchBotIframeIsLoading
+                          ? "align-items-center d-flex justify-content-center"
+                          : ""
+                      }`}
+                      style={
+                        trenchBotIframeIsLoading
+                          ? { minHeight: "637.23px" }
+                          : null
+                      }
+                    >
+                      {trenchBotIframeIsLoading && (
+                        <div
+                          className="spinner-border text-secondary"
+                          role="status"
+                        />
+                      )}
+                      <iframe
+                        className="w-100"
+                        style={{ height: "600px" }}
+                        onLoad={handleTrenchBotIframeIsLoaded}
+                        scrolling="no"
+                        hidden={trenchBotIframeIsLoading}
+                        src={`https://trench.bot/bundles/${tokenAddress}`}
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* Third row (meteora table)*/}
+            <div className="row mt-4 mb-2">
+              <div className="col-12">
+                {tokenAddress && (
+                  <div className="card">
+                    {meteoraIsLoading && (
+                      <div
+                        className="card-body align-items-center d-flex justify-content-center"
+                        style={{ minHeight: "200px" }}
+                      >
+                        <div
+                          className="spinner-border text-secondary"
+                          role="status"
+                        />
+                      </div>
+                    )}
+                    {!meteoraIsLoading && <Meteora data={meteoraData} />}
+                  </div>
+                )}
+              </div>
+            </div>
+          </>
+        )}
 
         {/* Thank you*/}
         {tokenAddress && (
