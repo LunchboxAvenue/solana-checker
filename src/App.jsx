@@ -267,8 +267,8 @@ function App() {
                       style={{ textAlign: "center" }}
                     >
                       <img
-                        src="https://portfolio.jup.ag/logo.svg"
-                        alt="Bubblemaps Logo"
+                        src="/jupiter.png"
+                        alt="Jupiter Logo"
                         className="company-logo"
                       />
                       <a
